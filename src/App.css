@@ -1,0 +1,143 @@
+.app-shell {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero {
+  text-align: center;
+}
+
+.eyebrow {
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: #a5b0ff;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.subtitle {
+  color: #c3ccff;
+  margin-top: 0.35rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 0.85rem 1.75rem;
+  font-size: 1rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:focus-visible {
+  outline: 3px solid #a3e8ff;
+  outline-offset: 2px;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.primary {
+  background: linear-gradient(135deg, #7d72ff, #a7b3ff);
+  color: #0f1020;
+  box-shadow: 0 10px 25px rgba(124, 114, 255, 0.35);
+}
+
+.secondary {
+  background: transparent;
+  color: #d6ddff;
+  border: 1px solid rgba(214, 221, 255, 0.3);
+}
+
+.result-card,
+.stats-card,
+.history-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+.result-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.coin-face {
+  font-size: 2.5rem;
+}
+
+.placeholder {
+  color: #abb4dc;
+  margin: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.stat p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #c1c7ff;
+}
+
+.stat strong {
+  font-size: 1.6rem;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.history-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  color: #f7f8ff;
+}
+
+@media (max-width: 500px) {
+  .app-shell {
+    padding: 1.5rem 1rem 2.5rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+}
