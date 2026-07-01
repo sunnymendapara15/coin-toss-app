@@ -24,3 +24,4 @@ The development server starts on [http://localhost:3000](http://localhost:3000).
 - A single button to toss a virtual coin (Heads/Tails).
 - Live stats for how many times each side has appeared.
 - A history of the five most recent tosses and the ability to reset the session.
+- A 3D metallic coin that spins and lands on the face that matches the toss.

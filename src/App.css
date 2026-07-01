@@ -7,6 +7,72 @@
   gap: 1.5rem;
 }
 
+.coin-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.coin-stage-inner {
+  width: 180px;
+  height: 180px;
+  perspective: 1400px;
+}
+
+.coin-3d {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.05s cubic-bezier(0.24, 0.82, 0.32, 1);
+}
+
+.coin-stage-note {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #b7bce8;
+  text-align: center;
+  max-width: 320px;
+  letter-spacing: 0.03em;
+}
+
+.coin-surface {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  color: #101027;
+  backface-visibility: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.coin-surface.front {
+  background: radial-gradient(circle at 25% 25%, #fff7d3 0%, #ffe08c 35%, #d29b44 60%, #a4631c 100%);
+}
+
+.coin-surface.back {
+  background: radial-gradient(circle at 70% 30%, #f9fcff 0%, #b9c7ff 40%, #7aa0ff 75%, #273678 100%);
+  color: #fefefe;
+  transform: rotateY(180deg);
+}
+
+.coin-rim {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 6px solid rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.45), 0 8px 18px rgba(0, 0, 0, 0.55);
+}
+
 .hero {
   text-align: center;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
 const coinSides = [
@@ -18,6 +18,15 @@ function App() {
   const [currentSide, setCurrentSide] = useState(null);
   const [history, setHistory] = useState([]);
   const [stats, setStats] = useState({ Heads: 0, Tails: 0 });
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [rotation, setRotation] = useState(0);
+  const flipTimerRef = useRef(null);
+
+  useEffect(() => () => {
+    if (flipTimerRef.current) {
+      clearTimeout(flipTimerRef.current);
+    }
+  }, []);
 
   const tossCoin = () => {
     const nextSide = coinSides[Math.floor(Math.random() * coinSides.length)];
@@ -27,12 +36,40 @@ function App() {
       ...prev,
       [nextSide.name]: prev[nextSide.name] + 1
     }));
+
+    setIsFlipping(true);
+    setRotation(prev => {
+      const baseSpins = 720;
+      const targetAngle = nextSide.name === 'Tails' ? 180 : 0;
+      const normalizedPrev = prev % 360;
+      const angleDifference = (targetAngle - normalizedPrev + 360) % 360;
+      return prev + baseSpins + angleDifference;
+    });
+
+    if (flipTimerRef.current) {
+      clearTimeout(flipTimerRef.current);
+    }
+
+    flipTimerRef.current = setTimeout(() => {
+      setIsFlipping(false);
+      flipTimerRef.current = null;
+    }, 1100);
   };
 
   const resetStats = () => {
     setCurrentSide(null);
     setHistory([]);
     setStats({ Heads: 0, Tails: 0 });
+    if (flipTimerRef.current) {
+      clearTimeout(flipTimerRef.current);
+      flipTimerRef.current = null;
+    }
+    setIsFlipping(false);
+    setRotation(0);
+  };
+
+  const coinStyle = {
+    transform: `rotateY(${rotation}deg)`
   };
 
   return (
@@ -52,6 +89,23 @@ function App() {
         <button type="button" onClick={resetStats} className="secondary">
           Reset
         </button>
+      </section>
+
+      <section className="coin-stage">
+        <div className="coin-stage-inner">
+          <div className={`coin-3d ${isFlipping ? 'flipping' : ''}`} style={coinStyle}>
+            <div className="coin-surface front">
+              <span>Heads</span>
+            </div>
+            <div className="coin-surface back">
+              <span>Tails</span>
+            </div>
+            <div className="coin-rim" />
+          </div>
+        </div>
+        <p className="coin-stage-note">
+          The metallic coin spins in 3D before landing on the face that matches your toss.
+        </p>
       </section>
 
       <section className="result-card">
@@ -87,7 +141,7 @@ function App() {
         ) : (
           <ul className="history-list">
             {history.map((entry, index) => (
-              <li key={`${entry.name}-${index}`}>>
+              <li key={`${entry.name}-${index}`}>
                 <span className="coin-face">{entry.emoji}</span>
                 <span>{entry.name}</span>
               </li>
