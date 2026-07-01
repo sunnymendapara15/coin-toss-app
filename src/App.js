@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from 'react';
 import './App.css';
 
@@ -21,12 +22,55 @@ function App() {
   const [isFlipping, setIsFlipping] = useState(false);
   const [rotation, setRotation] = useState(0);
   const flipTimerRef = useRef(null);
+  const audioContextRef = useRef(null);
 
   useEffect(() => () => {
     if (flipTimerRef.current) {
       clearTimeout(flipTimerRef.current);
     }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
   }, []);
+
+  const getAudioContext = () => {
+    if (audioContextRef.current) {
+      return audioContextRef.current;
+    }
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    const Candidate = window.AudioContext || window.webkitAudioContext;
+    if (!Candidate) {
+      return null;
+    }
+    audioContextRef.current = new Candidate();
+    return audioContextRef.current;
+  };
+
+  const playCoinSound = () => {
+    const ctx = getAudioContext();
+    if (!ctx) {
+      return;
+    }
+
+    const now = ctx.currentTime;
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.type = 'triangle';
+    oscillator.frequency.setValueAtTime(420 + Math.random() * 240, now);
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.35, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.start(now);
+    oscillator.stop(now + 1.1);
+  };
 
   const tossCoin = () => {
     const nextSide = coinSides[Math.floor(Math.random() * coinSides.length)];
@@ -38,6 +82,7 @@ function App() {
     }));
 
     setIsFlipping(true);
+    playCoinSound();
     setRotation(prev => {
       const baseSpins = 720;
       const targetAngle = nextSide.name === 'Tails' ? 180 : 0;
@@ -104,7 +149,7 @@ function App() {
           </div>
         </div>
         <p className="coin-stage-note">
-          The metallic coin spins in 3D before landing on the face that matches your toss.
+          A metallic coin spins with depth, shadows, and a short chime whenever you launch a toss.
         </p>
       </section>
 
